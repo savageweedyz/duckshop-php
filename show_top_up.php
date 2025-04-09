@@ -1,0 +1,62 @@
+<?php
+include 'condb.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initialscale=1.0">
+<link href="css/bootstrap.min.css" rel="stylesheet" >
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+<?php include 'menu.php'?>
+<div class="container">
+<div class=" h4 text-center alert alert-success mb-4 mt-4 "
+role="alert"> แสดงข้อมูล </div>
+<div class="text-end">
+    <a class="btn btn-primary mb-4" href="fr_top_up.php" role="button">Add +</a>
+</div>
+<table class="table table-striped">
+<tr>
+<th>รหัสสินค้า</th>
+<th>ชื่อสินค้า</th>
+<th>ชื่อเกม</th>
+<th>จำนวน</th>
+<th>ราคา</th>
+<th>รูปภาพ</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
+<?php
+//คำสั่งเลือกข้อมูลจากตาราง product ขึ้นมาแสดงผล
+$sql = "SELECT * FROM top_up t,product p where t.pro_id=p.pro_id";
+$result=mysqli_query($conn,$sql);
+while($row=mysqli_fetch_array($result)){
+?>
+<tr>
+<td><?=$row["top_id"]?></td>
+<td><?=$row["top_name"]?></td>
+<td><?=$row['pro_name']?></td>
+<td><?=$row['price']?></td>
+<td><?=$row['amount']?></td>
+<td><img src="image/<?=$row['top_pic']?>" width="90px" height="100px"></td>
+<td><a class="btn btn-warning mb-4" href="edit_top_up.php?id=<?=$row["top_id"]?>" role="button">Edit</a></td>
+<td><a class="btn btn-danger mb-4" href="dl_top_up.php?id=<?=$row["top_id"]?>"onclick="Del(this.href);return false;" role="button">Delete</a></td>
+</tr>
+<?php
+}
+mysqli_close($conn); //ปิดการเชื่อต่อฐานข้อมูล
+?>
+</table>
+</div>
+</body>
+</html>
+<script>  function Del(mypage){     
+    var agree=confirm("คุณต้องการลบข้อมูลหรือไม่");     
+    if(agree){         
+        window.location=mypage;     
+        } } 
+</script>
